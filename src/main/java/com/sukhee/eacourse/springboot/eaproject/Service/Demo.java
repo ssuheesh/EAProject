@@ -2,9 +2,9 @@ package com.sukhee.eacourse.springboot.eaproject.Service;
 
 import org.springframework.stereotype.Service;
 
-@Service
-public class DemoService {
+@Service("DemoService")
+public class Demo {
     public String sayHello(String name) {
-        return "Hello World! Demo: " + name;
+        return String.format("Hello World! Demo: %s!", name);
     }
 }

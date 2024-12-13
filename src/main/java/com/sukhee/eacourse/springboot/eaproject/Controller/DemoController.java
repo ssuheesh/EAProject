@@ -1,18 +1,20 @@
 package com.sukhee.eacourse.springboot.eaproject.Controller;
 
-import com.sukhee.eacourse.springboot.eaproject.Service.DemoService;
+import com.sukhee.eacourse.springboot.eaproject.Service.Demo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class DemoController {
     @Autowired
-    DemoService demoService;
+    Demo demoService;
     @RequestMapping(method = RequestMethod.GET, path = "/demo/{name}")
     public String demo(@PathVariable String name) {
         return demoService.sayHello(name);
+    }
+
+    @PostMapping(path = "/demo", params = {"val1", "val2"})
+    public String demo2(){
+        return "Hello World";
     }
 }
