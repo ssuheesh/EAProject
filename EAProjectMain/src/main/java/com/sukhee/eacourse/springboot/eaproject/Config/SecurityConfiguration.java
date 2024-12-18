@@ -35,9 +35,8 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/users/register-admin").permitAll()
-                        .requestMatchers("/api/users/register").permitAll() // Allow /register endpoint
-                        .requestMatchers("/api/users/login").permitAll()   // Allow /login endpoint
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // Allow /login endpoint
                         .anyRequest().authenticated()                      // All other requests require authentication
                 );
         return http.build();

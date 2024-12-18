@@ -1,4 +1,4 @@
-package com.sukhee.eacourse.springboot.eaproject.Controller;
+package com.sukhee.eacourse.springboot.eaproject.Controller.Private;
 
 import com.sukhee.eacourse.springboot.eaproject.Domain.User;
 import com.sukhee.eacourse.springboot.eaproject.Service.UserService;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
-public class AdminController {
+public class AdminSpecificController {
 
     @Autowired
     private UserService userService;

@@ -1,62 +1,45 @@
 package com.sukhee.eacourse.springboot.eaproject.Domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Getter
 @Entity
 public class Event {
+    // Getters and setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Setter
     private String title;
-    private Date eventDate;
+
+    @Setter
+    private LocalDate eventDate;
 
     @ManyToOne
+    @Setter
     private Venue venue;
 
+    @Setter
     @ManyToMany
     private List<Participant> participants;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
+    @Setter
+    @ManyToOne
+    private Organizer organizer;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getEventDate() {
-        return eventDate;
-    }
-
-    public void setEventDate(Date eventDate) {
-        this.eventDate = eventDate;
-    }
-
-    public Venue getVenue() {
-        return venue;
-    }
-
-    public void setVenue(Venue venue) {
-        this.venue = venue;
-    }
-
-    public List<Participant> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
+    public void addParticipant(Participant participant) {
+        if(participants == null) {
+            participants = new ArrayList<>();
+        }
+        participants.add(participant);
     }
 }

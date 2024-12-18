@@ -1,4 +1,4 @@
-package com.sukhee.eacourse.springboot.eaproject.Controller;
+package com.sukhee.eacourse.springboot.eaproject.Controller.Private;
 
 import com.sukhee.eacourse.springboot.eaproject.Service.Demo;
 import org.springframework.beans.factory.annotation.Autowired;
