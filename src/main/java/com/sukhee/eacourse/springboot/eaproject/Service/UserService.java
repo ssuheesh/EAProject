@@ -5,6 +5,7 @@ import com.sukhee.eacourse.springboot.eaproject.Repository.AuthorityRepository;
 import com.sukhee.eacourse.springboot.eaproject.Repository.UserRepository;
 import com.sukhee.eacourse.springboot.eaproject.Service.Auth.TokenProvider;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import java.util.Set;
 public class UserService {
 
     private static final String AUTHORITY_USER = "ROLE_USER";
+    private static final String AUTHORITY_ADMIN = "ROLE_ADMIN";
 
     private final UserRepository userRepository;
 
@@ -41,6 +43,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User registerAdmin(User user) {
+        Set<Authority> authorities = new HashSet<>(Arrays.asList(getAuthority(AUTHORITY_ADMIN)));
+        user.setAuthorities(authorities);
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+        return userRepository.save(user);
+    }
+
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
@@ -54,6 +64,12 @@ public class UserService {
             e.printStackTrace();
             throw new RuntimeException("Invalid username or password");
         }
+    }
+
+    public String logout(String token) {
+        String jwt = token.substring(7);
+        tokenProvider.destroyToken(jwt);
+        return "Token invalidated successfully";
     }
 
     private Authority getAuthority(String authority) {

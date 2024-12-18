@@ -33,6 +33,8 @@ public class TokenProvider {
     private Long expiryTimeInSeconds;
 //    @Autowired
 //    private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     public String createToken(Authentication authentication) {
         String username = authentication.getName();
@@ -58,11 +60,18 @@ public class TokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            if (tokenBlacklistService.isTokenBlacklisted(token)) {
+                return false; // The token has been invalidated
+            }
             parseClaimsFromToken(token);
             return true;
         } catch (JwtException e) {
             return false;
         }
+    }
+
+    public void destroyToken(String token) {
+        tokenBlacklistService.addToBlacklist(token); // Add token to the blacklist
     }
 
     private SecretKey getSecretKey() {
