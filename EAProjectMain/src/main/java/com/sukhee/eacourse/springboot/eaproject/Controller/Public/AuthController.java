@@ -2,6 +2,8 @@ package com.sukhee.eacourse.springboot.eaproject.Controller.Public;
 
 import com.sukhee.eacourse.springboot.eaproject.Controller.DTO.IdTokenDTO;
 import com.sukhee.eacourse.springboot.eaproject.Controller.DTO.LoginRequestDTO;
+import com.sukhee.eacourse.springboot.eaproject.Domain.Organizer;
+import com.sukhee.eacourse.springboot.eaproject.Domain.Participant;
 import com.sukhee.eacourse.springboot.eaproject.Domain.User;
 import com.sukhee.eacourse.springboot.eaproject.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,12 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public User register(@RequestBody Participant user) {
         return userService.registerUser(user);
     }
 
     @PostMapping("/register-admin")
-    public User registerAdmin(@RequestBody User user) {
+    public User registerAdmin(@RequestBody Organizer user) {
         return userService.registerAdmin(user);
     }
 

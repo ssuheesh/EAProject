@@ -10,14 +10,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminSpecificController {
 
     @Autowired
     private UserService userService;
     @GetMapping("/users")
-    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllUsers() {
         return userService.findAllUsers();
     }
-
 }

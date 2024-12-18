@@ -1,9 +1,12 @@
 package com.sukhee.eacourse.springboot.eaproject.Service;
 import com.sukhee.eacourse.springboot.eaproject.Domain.Authority;
+import com.sukhee.eacourse.springboot.eaproject.Domain.Participant;
 import com.sukhee.eacourse.springboot.eaproject.Domain.User;
 import com.sukhee.eacourse.springboot.eaproject.Repository.AuthorityRepository;
 import com.sukhee.eacourse.springboot.eaproject.Repository.UserRepository;
 import com.sukhee.eacourse.springboot.eaproject.Service.Auth.TokenProvider;
+import com.sukhee.eacourse.springboot.eaproject.Service.Exception.CustomNotFoundException;
+import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,10 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -35,7 +35,7 @@ public class UserService {
 
     private final AuthenticationManager authenticationManager;
 
-    public User registerUser(User user) {
+    public User registerUser(Participant user) {
         Set<Authority> authorities = new HashSet<>(Arrays.asList(getAuthority(AUTHORITY_USER)));
         user.setAuthorities(authorities);
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -49,6 +49,18 @@ public class UserService {
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
         return userRepository.save(user);
+    }
+
+    public User getUserByToken(String token) {
+        token = token.substring(7);
+        Claims claims = tokenProvider.parseClaimsFromToken(token);
+        System.out.println(claims);
+        Optional<User> u = userRepository.findByEmail(String.valueOf(claims.get("username")));
+        if(u.isPresent()) {
+            return u.get();
+        } else {
+            throw new CustomNotFoundException("User not found with this credentials.");
+        }
     }
 
     public List<User> findAllUsers() {

@@ -78,7 +78,7 @@ public class TokenProvider {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    private Claims parseClaimsFromToken(String token) {
+    public Claims parseClaimsFromToken(String token) {
         return Jwts.parser()
                 .verifyWith(getSecretKey())
                 .build().parseSignedClaims(token).getPayload();

@@ -1,6 +1,7 @@
 package com.sukhee.eacourse.springboot.eaproject.Controller.Private;
 
 import com.sukhee.eacourse.springboot.eaproject.Domain.User;
+import com.sukhee.eacourse.springboot.eaproject.Repository.UserRepository;
 import com.sukhee.eacourse.springboot.eaproject.Service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
@@ -22,9 +25,9 @@ public class UserController {
         return ResponseEntity.ok(userService.logout(token));
     }
 
-    @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.findAllUsers();
+    @GetMapping("/users/me")
+    public User getUser(@RequestHeader("Authorization") String token) {
+        return userService.getUserByToken(token);
     }
 }
 
