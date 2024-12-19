@@ -2,8 +2,10 @@ package com.sukhee.eacourse.springboot.eaproject.Service;
 
 import com.sukhee.eacourse.springboot.eaproject.Controller.DTO.EventDTO;
 import com.sukhee.eacourse.springboot.eaproject.Domain.Event;
+import com.sukhee.eacourse.springboot.eaproject.Domain.Organizer;
 import com.sukhee.eacourse.springboot.eaproject.Repository.EventRepository;
 import com.sukhee.eacourse.springboot.eaproject.Service.Exception.CustomNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.function.Consumer;
 @Service
 public class EventService {
     private final EventRepository eventRepository;
+    @Autowired
+    private UserService userService;
 
     public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
@@ -30,7 +34,9 @@ public class EventService {
             throw new CustomNotFoundException("Event not found.");
         }
     }
-    public Event saveEvent(Event event) {
+    public Event saveEvent(Event event, String token) {
+        Organizer organizer = (Organizer) userService.getUserByToken(token);
+        event.setOrganizer(organizer);
         return eventRepository.save(event);
     }
 

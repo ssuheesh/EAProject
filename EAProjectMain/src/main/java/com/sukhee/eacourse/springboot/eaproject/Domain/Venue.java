@@ -1,6 +1,7 @@
 package com.sukhee.eacourse.springboot.eaproject.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class Venue {
 
     @Getter@Setter
     @OneToMany(mappedBy = "venue", cascade = CascadeType.PERSIST)
-    @JsonBackReference
+    @JsonManagedReference
     List<Event> events;
 
     public void addEvent(Event event) {

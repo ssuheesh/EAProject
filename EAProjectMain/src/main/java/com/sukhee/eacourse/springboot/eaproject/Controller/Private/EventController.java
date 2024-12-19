@@ -24,9 +24,8 @@ public class EventController {
     @PostMapping(path="")
     @PreAuthorize("hasRole('ADMIN')")
     public Event createEvent(@RequestBody Event event, @RequestHeader("Authorization") String token) {
-        Organizer organizer = (Organizer) userService.getUserByToken(token);
-        event.setOrganizer(organizer);
-        return eventService.saveEvent(event);
+
+        return eventService.saveEvent(event, token);
     }
 
     @PutMapping(path = "/{id}")

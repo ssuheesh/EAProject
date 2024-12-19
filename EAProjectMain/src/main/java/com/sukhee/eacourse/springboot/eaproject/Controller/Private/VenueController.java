@@ -25,8 +25,8 @@ public class VenueController {
 
     @PostMapping("/{id}/events")
     @PreAuthorize("hasRole('ADMIN')")
-    public Venue createVenueEvent(@PathVariable Long id, @RequestBody Event event) {
-        return venueService.addEventToVenue(id, event);
+    public Venue createVenueEvent(@PathVariable Long id, @RequestBody Event event, @RequestHeader("Authorization") String token) {
+        return venueService.addEventToVenue(id, event, token);
     }
 
     @PutMapping("/{id}")

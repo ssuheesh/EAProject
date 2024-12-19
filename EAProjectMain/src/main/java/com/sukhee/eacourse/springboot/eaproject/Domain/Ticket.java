@@ -18,7 +18,4 @@ public class Ticket {
     @Setter
     @ManyToOne
     private Event event;
-
-    @Setter
-    private Double price;
 }

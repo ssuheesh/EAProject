@@ -27,7 +27,7 @@ public class Event {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @Setter
-    @JsonManagedReference
+    @JsonBackReference
     private Venue venue;
 
     @Setter
@@ -37,6 +37,9 @@ public class Event {
     @Setter
     @ManyToOne
     private Organizer organizer;
+
+    @Getter@Setter
+    public int price;
 
     public Event() {}
 
