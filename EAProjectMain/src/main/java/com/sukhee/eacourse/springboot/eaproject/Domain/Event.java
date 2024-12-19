@@ -1,5 +1,7 @@
 package com.sukhee.eacourse.springboot.eaproject.Domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,17 +25,20 @@ public class Event {
     @Setter
     private LocalDate eventDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @Setter
+    @JsonManagedReference
     private Venue venue;
 
     @Setter
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Participant> participants;
 
     @Setter
     @ManyToOne
     private Organizer organizer;
+
+    public Event() {}
 
 
     public void addParticipant(Participant participant) {

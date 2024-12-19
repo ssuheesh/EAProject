@@ -1,11 +1,12 @@
 package com.sukhee.eacourse.springboot.eaproject.Domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -17,4 +18,14 @@ public class Venue {
     private String name;
     @Setter
     private String location;
+
+    @Getter@Setter
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.PERSIST)
+    @JsonBackReference
+    List<Event> events;
+
+    public void addEvent(Event event) {
+        if(events == null) events = new ArrayList<>();
+        events.add(event);
+    }
 }

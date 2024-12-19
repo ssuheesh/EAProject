@@ -1,4 +1,5 @@
 package com.sukhee.eacourse.springboot.eaproject.Service.Advice;
+import com.sukhee.eacourse.springboot.eaproject.Service.Exception.CustomNotFoundException;
 import com.sukhee.eacourse.springboot.eaproject.Service.Response.ApiErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -69,6 +70,11 @@ public class GlobalExceptionHandler {
         if (exception instanceof ExpiredJwtException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());
             errorDetail.setProperty("description", "The JWT token has expired");
+        }
+
+        if(exception instanceof CustomNotFoundException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), exception.getMessage());
+            errorDetail.setProperty("description", exception.getMessage());
         }
 
         if (errorDetail == null) {

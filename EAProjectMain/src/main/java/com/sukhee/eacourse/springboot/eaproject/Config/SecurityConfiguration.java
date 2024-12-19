@@ -36,6 +36,7 @@ public class SecurityConfiguration {
                 .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
                         // Allow /login endpoint
                         .anyRequest().authenticated()                      // All other requests require authentication
                 );
