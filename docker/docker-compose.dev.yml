@@ -1,18 +1,32 @@
 version: '3.1'
 services:
-  my-backend:
-    container_name: my-backend
+  backend-main:
+    container_name: backend-main
     build:
       context: ./../
       dockerfile: docker/backend.Dockerfile
     volumes:
-      - ./../src:/app/src
-      - ./../target:/app/target
+      - ./../EAProjectMain/src:/app/src
+      - ./../EAProjectMain/target:/app/target
     ports:
       - 8080:8080
     environment:
-      - JAVA_OPTS=-Dspring.devtools.restart.enabled=true -Dspring.devtools.livereload.enabled=true
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=aws
+      - CHOKIDAR_USEPOLLING=true
+    restart: unless-stopped
+    networks:
+      - my-network
+  backend-second:
+    container_name: backend-second
+    build:
+      context: ./../
+      dockerfile: docker/backend-second.Dockerfile
+    volumes:
+      - ./../EAProjectSecond/src:/app/src
+      - ./../EAProjectSecond/target:/app/target
+    ports:
+      - 8081:8081
+    environment:
       - CHOKIDAR_USEPOLLING=true
     restart: unless-stopped
     networks:
@@ -22,6 +36,8 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: my_root_password
+    networks:
+      - my-network
   mq:
     image: apache/activemq-artemis:latest-alpine
     restart: always
@@ -30,6 +46,8 @@ services:
       ARTEMIS_PASSWORD: cs544
       ANONYMOUS_LOGIN: true
       EXTRA_ARGS: "--name cs544broker --no-autotune"
+    networks:
+      - my-network
 networks:
   my-network:
     driver: bridge
