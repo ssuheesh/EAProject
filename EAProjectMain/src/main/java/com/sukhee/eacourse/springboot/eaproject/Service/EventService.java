@@ -4,10 +4,13 @@ import com.sukhee.eacourse.springboot.eaproject.Controller.DTO.EventDTO;
 import com.sukhee.eacourse.springboot.eaproject.Domain.Event;
 import com.sukhee.eacourse.springboot.eaproject.Domain.Organizer;
 import com.sukhee.eacourse.springboot.eaproject.Repository.EventRepository;
+import com.sukhee.eacourse.springboot.eaproject.Repository.Specification.EventSpecifications;
 import com.sukhee.eacourse.springboot.eaproject.Service.Exception.CustomNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +37,9 @@ public class EventService {
             throw new CustomNotFoundException("Event not found.");
         }
     }
+    public Event getEventByIdWithLock(Long id) {
+        return eventRepository.findByIdWithLock(id);
+    }
     public Event saveEvent(Event event, String token) {
         Organizer organizer = (Organizer) userService.getUserByToken(token);
         event.setOrganizer(organizer);
@@ -59,5 +65,14 @@ public class EventService {
         } else {
             throw new CustomNotFoundException("Event not found.");
         }
+    }
+
+    public List<Event> getFilteredEvents(String title, LocalDate startDate, LocalDate endDate, Double minPrice, Double maxPrice) {
+        Specification<Event> specification = Specification.where(EventSpecifications.hasTitle(title))
+        .and(EventSpecifications.hasEventDateAfter(startDate))
+        .and(EventSpecifications.hasEventDateBefore(endDate))
+        .and(EventSpecifications.hasPriceGreaterThanOrEqualTo(minPrice))
+        .and(EventSpecifications.hasPriceLessThanOrEqualTo(maxPrice));
+        return eventRepository.findAll(specification);
     }
 }

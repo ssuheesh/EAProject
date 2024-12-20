@@ -4,11 +4,9 @@ import com.sukhee.eacourse.springboot.eaproject.Domain.Event;
 import com.sukhee.eacourse.springboot.eaproject.Domain.Venue;
 import com.sukhee.eacourse.springboot.eaproject.Service.EventService;
 import com.sukhee.eacourse.springboot.eaproject.Service.VenueService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -25,8 +23,15 @@ public class PublicController {
     }
 
     @GetMapping(path = "/events")
-    public List<Event> getEvents() {
-        return eventService.getAllEvents();
+    public List<Event> getEvents(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice ) {
+        System.out.println(title);
+        return eventService.getFilteredEvents(title, startDate, endDate, minPrice, maxPrice);
+//        return eventService.getAllEvents();
     }
 
     @GetMapping(path = "/events/{id}")

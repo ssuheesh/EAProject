@@ -33,4 +33,11 @@ public class EventController {
     public Event updateEvent(@PathVariable Long id, @RequestBody EventDTO eventDTO) {
         return eventService.updateEvent(id, eventDTO);
     }
+
+    @DeleteMapping(path="/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteEvent(@PathVariable Long id) {
+        eventService.deleteEvent(id);
+        return "delete event";
+    }
 }

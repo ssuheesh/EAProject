@@ -35,5 +35,12 @@ public class VenueController {
         return venueService.updateVenue(id, venuedto);
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String deleteVenue(@PathVariable Long id) {
+        venueService.deleteVenue(id);
+        return "delete venue";
+    }
+
 
 }

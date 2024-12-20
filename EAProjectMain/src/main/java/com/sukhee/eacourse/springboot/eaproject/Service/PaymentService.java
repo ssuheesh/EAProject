@@ -33,7 +33,7 @@ public class PaymentService {
 
     @Transactional
     public Payment processPayment(PaymentDTO paymentdto, Participant participant) {
-        Event event = eventService.getEventById(paymentdto.getEventId());
+        Event event = eventService.getEventByIdWithLock(paymentdto.getEventId());
         Payment payment = new Payment();
         payment.setPaymentState(PaymentState.PROCESSING);
         payment.setAmount(event.getPrice()*paymentdto.getQuantity());
@@ -55,7 +55,10 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
-    public Payment updatePaymentAndCreateTickets(Payment payment) {
+    //Pessimistic Lock example
+    @Transactional
+    public Payment updatePaymentAndCreateTickets(Payment payment1) {
+        Payment payment = paymentRepository.findByIdWithLock(payment1.getId());
         List<Ticket> tickets= new ArrayList<>();
         for(int i=0; i<payment.getQuantity(); i++) {
             Ticket t = new Ticket();

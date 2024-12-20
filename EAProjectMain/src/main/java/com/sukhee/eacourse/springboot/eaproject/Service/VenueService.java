@@ -50,6 +50,11 @@ public class VenueService {
         return venue;
     }
 
+    public void deleteVenue(Long id) {
+        Venue venue = getVenueById(id);
+        venueRepository.delete(venue);
+    }
+
     @Transactional
     public Venue addEventToVenue(Long venueId, Event event, String token) {
         Venue venue = getVenueById(venueId);
