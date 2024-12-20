@@ -49,7 +49,7 @@ services:
     environment:
       ARTEMIS_USER: ea
       ARTEMIS_PASSWORD: cs544
-      ANONYMOUS_LOGIN: true
+      ANONYMOUS_LOGIN: "true"
     networks:
       - my-network
 networks:
