@@ -1,6 +1,7 @@
 package com.sukhee.eacourse.springboot.eaproject.Domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class Event {
     private Organizer organizer;
 
     @Getter@Setter
-    public int price;
+    public double price;
 
     public Event() {}
 

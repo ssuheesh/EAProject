@@ -18,4 +18,13 @@ public class Ticket {
     @Setter
     @ManyToOne
     private Event event;
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", participant=" + participant +
+                ", event=" + event +
+                '}';
+    }
 }
