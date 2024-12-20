@@ -28,32 +28,11 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     @Query("SELECT e FROM Event e WHERE e.id = :id")
     Event findByIdWithLock(@Param("id") Long id);
 
-//
-//    List<Event> findEventsByFilters(String title, LocalDate startDate, LocalDate endDate, Double minPrice, Double maxPrice) {
-//        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Event> cq = cb.createQuery(Event.class);
-//        Root<Event> event = cq.from(Event.class);
-//
-//        List<Predicate> predicates = new ArrayList<>();
-//
-//        if (title != null && !title.isEmpty()) {
-//            predicates.add(cb.like(cb.lower(event.get("title")), "%" + title.toLowerCase() + "%"));
-//        }
-//        if (startDate != null) {
-//            predicates.add(cb.greaterThanOrEqualTo(event.get("eventDate"), startDate));
-//        }
-//        if (endDate != null) {
-//            predicates.add(cb.lessThanOrEqualTo(event.get("eventDate"), endDate));
-//        }
-//        if (minPrice != null) {
-//            predicates.add(cb.greaterThanOrEqualTo(event.get("price"), minPrice));
-//        }
-//        if (maxPrice != null) {
-//            predicates.add(cb.lessThanOrEqualTo(event.get("price"), maxPrice));
-//        }
-//
-//        cq.where(cb.and(predicates.toArray(new Predicate[0])));
-//        return entityManager.createQuery(cq).getResultList();
-//    }
+    @Query(name="Event.findUpcomingEventsByOrganizerCompanyNameWithParticipants", nativeQuery = false, value = "SELECT e FROM Event e " +
+            "WHERE e.organizer.companyName LIKE :companyName " +
+            "AND e.eventDate > CURRENT_DATE " +
+            "AND SIZE(e.participants) > 0")
+    List<Event> findUpcomingEventsByOrganizerCompanyNameWithParticipants(@Param("companyName") String companyName);
+
 
 }

@@ -29,9 +29,13 @@ public class PublicController {
             @RequestParam(required = false) LocalDate endDate,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice ) {
-        System.out.println(title);
         return eventService.getFilteredEvents(title, startDate, endDate, minPrice, maxPrice);
-//        return eventService.getAllEvents();
+    }
+
+    @GetMapping(path = "/events-upcoming")
+    public List<Event> getEvents(
+            @RequestParam(required = true) String companyName) {
+        return eventService.getUpcomingEventsByOrganizerCompanyName(companyName);
     }
 
     @GetMapping(path = "/events/{id}")

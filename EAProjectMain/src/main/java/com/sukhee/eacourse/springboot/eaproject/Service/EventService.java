@@ -75,4 +75,8 @@ public class EventService {
         .and(EventSpecifications.hasPriceLessThanOrEqualTo(maxPrice));
         return eventRepository.findAll(specification);
     }
+
+    public List<Event> getUpcomingEventsByOrganizerCompanyName(String companyName) {
+        return eventRepository.findUpcomingEventsByOrganizerCompanyNameWithParticipants("%" + companyName + "%");
+    }
 }
