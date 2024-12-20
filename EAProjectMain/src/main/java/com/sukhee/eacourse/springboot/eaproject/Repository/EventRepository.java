@@ -2,7 +2,6 @@ package com.sukhee.eacourse.springboot.eaproject.Repository;
 
 import com.sukhee.eacourse.springboot.eaproject.Domain.Event;
 import com.sukhee.eacourse.springboot.eaproject.Domain.Payment;
-import com.sukhee.eacourse.springboot.eaproject.Repository.Specification.Specification;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
@@ -28,9 +27,6 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT e FROM Event e WHERE e.id = :id")
     Event findByIdWithLock(@Param("id") Long id);
-    static Specification<Event> hasTitle(String title) {
-        return (event, cq, cb) -> cb.like(cb.lower(event.get("title")), "%" + title.toLowerCase() + "%");
-    }
 
 //
 //    List<Event> findEventsByFilters(String title, LocalDate startDate, LocalDate endDate, Double minPrice, Double maxPrice) {
